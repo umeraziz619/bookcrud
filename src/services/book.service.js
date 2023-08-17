@@ -1,5 +1,5 @@
 
-import {BookModel } from "../models/index.js";
+import { AuthorModel, BookModel } from "../models/index.js";
 export const BookService = {
 	getall: async () => {
         try {
@@ -28,6 +28,13 @@ export const BookService = {
                 response: "Data Already Exists",
               };
             }
+		let checkAuthor = await AuthorModel.findById(body.author_id);
+      if (!checkAuthor) {
+        throw {
+          status: 404,
+          response: "Author ID Not Found",
+        };
+      }
             data =await BookModel.create(body)
             return {
                 status: 200,
